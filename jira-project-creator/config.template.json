@@ -1,0 +1,22 @@
+{
+  "jira": {
+    "instanceUrl": "https://yourcompany.atlassian.net",
+    "email": "your.email@company.com",
+    "apiToken": "YOUR_JIRA_API_TOKEN_HERE",
+    "projectKey": "PROJ"
+  },
+  "anthropic": {
+    "apiKey": "${ANTHROPIC_API_KEY}"
+  },
+  "timeline": {
+    "startDate": "2026-02-14",
+    "compressionFactor": 7,
+    "workDaysPerWeek": 7
+  },
+  "options": {
+    "createPlan": true,
+    "addDescriptions": true,
+    "addDependencies": true,
+    "addLabels": true
+  }
+}

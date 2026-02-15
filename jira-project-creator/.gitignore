@@ -1,0 +1,23 @@
+# Credentials and config files
+config.json
+*-config.json
+!config.template.json
+!example-config.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+
+# Output files
+*.json
+!config.template.json
+!example-config.json
+project-summary.json
+
+# Logs
+*.log

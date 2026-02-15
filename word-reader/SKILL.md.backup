@@ -1,0 +1,202 @@
+---
+name: word-reader
+description: Read and extract content from Microsoft Word (.docx) files. Use whenever the user wants to view, analyze, extract text or images from, summarize, or work with content in Word documents. Triggers include reading .docx files, extracting data from Word documents, analyzing document structure, or any task that requires accessing Word file content as input.
+---
+
+# Word Document Reader
+
+## Overview
+
+This skill enables reading and extracting content from Microsoft Word (.docx) files. Use this when you need to access the contents of Word documents to analyze, summarize, extract information, or use as input for other tasks.
+
+## When to Use This Skill
+
+Use this skill when:
+- User asks to read, view, or open a .docx file
+- User wants to extract text, tables, or images from a Word document
+- User needs to analyze or summarize document content
+- User wants to convert Word content to another format
+- User references a Word file and needs its content for any purpose
+- User asks questions about content within a Word file
+
+## Reading Word Documents
+
+### Quick Text Extraction
+
+For simple text extraction, use `pandoc`:
+
+```bash
+# Extract plain text
+pandoc document.docx -t plain -o output.txt
+
+# Extract to markdown (preserves structure)
+pandoc document.docx -t markdown -o output.md
+
+# Include tracked changes
+pandoc --track-changes=all document.docx -o output.md
+```
+
+### Understanding Document Structure
+
+To analyze the full document structure or access raw XML:
+
+```bash
+# Install unpack script if needed
+python scripts/office/unpack.py document.docx unpacked/
+
+# View the main content
+cat unpacked/word/document.xml | head -100
+```
+
+The unpacked structure includes:
+- `word/document.xml` - Main document content
+- `word/styles.xml` - Style definitions
+- `word/header*.xml` - Header content
+- `word/footer*.xml` - Footer content
+- `word/media/` - Embedded images
+- `word/comments.xml` - Comments
+- `docProps/core.xml` - Document properties (author, dates, etc.)
+
+### Extracting Images
+
+```bash
+# Method 1: Unpack and copy from media folder
+python scripts/office/unpack.py document.docx unpacked/
+ls unpacked/word/media/  # Images are here
+
+# Method 2: Convert to PDF then extract images
+python scripts/office/soffice.py --headless --convert-to pdf document.docx
+pdftoppm -jpeg -r 150 document.pdf page
+```
+
+### Reading Tables
+
+Tables are in the XML structure. Extract to markdown for easier parsing:
+
+```bash
+pandoc document.docx -t markdown -o output.md
+# Tables will be formatted as markdown tables
+```
+
+### Accessing Document Metadata
+
+```bash
+# Unpack the document
+python scripts/office/unpack.py document.docx unpacked/
+
+# View metadata
+cat unpacked/docProps/core.xml
+```
+
+Metadata includes: author, creation date, modification date, title, subject, keywords.
+
+## Converting Legacy .doc Files
+
+If the user provides a legacy `.doc` file, convert it first:
+
+```bash
+python scripts/office/soffice.py --headless --convert-to docx document.doc
+```
+
+Then proceed with reading the converted .docx file.
+
+## Common Use Cases
+
+### Summarizing a Document
+
+```bash
+# Extract to markdown
+pandoc document.docx -t markdown -o content.md
+
+# Read and summarize
+cat content.md
+# Then provide summary to user
+```
+
+### Answering Questions About Document Content
+
+```bash
+# Extract full text
+pandoc document.docx -t plain -o content.txt
+
+# Read the content
+cat content.txt
+# Then answer user's questions based on content
+```
+
+### Extracting Specific Sections
+
+```bash
+# Extract to markdown to preserve headings
+pandoc document.docx -t markdown -o content.md
+
+# Use grep or other tools to find specific sections
+grep -A 20 "Section Title" content.md
+```
+
+### Comparing Document Versions
+
+```bash
+# Extract both documents
+pandoc doc1.docx -t plain -o doc1.txt
+pandoc doc2.docx -t plain -o doc2.txt
+
+# Compare
+diff doc1.txt doc2.txt
+```
+
+## Dependencies
+
+This skill requires:
+- **pandoc** - For text and markdown extraction (usually pre-installed)
+- **LibreOffice** - For PDF conversion and legacy .doc support (via `scripts/office/soffice.py`)
+- **Poppler** (pdftoppm) - For image extraction via PDF (usually pre-installed)
+
+All dependencies are typically available in the Claude Code environment.
+
+## Tips
+
+1. **Start with pandoc** - It's the fastest way to get readable content from .docx files
+2. **Use markdown output** - Preserves document structure (headings, lists, tables) better than plain text
+3. **Check for tracked changes** - Use `--track-changes=all` if the document might have revisions
+4. **Unpack only when needed** - Only unpack the .docx when you need access to raw XML, images, or metadata
+5. **Handle errors gracefully** - If pandoc fails, the document might be corrupted; try unpacking to inspect the XML
+
+## Limitations
+
+- Cannot modify documents (use the `docx` skill for editing)
+- Complex formatting details (fonts, colors, precise spacing) may be lost in text extraction
+- Some advanced Word features (macros, embedded objects) are not accessible through simple extraction
+- Encrypted or password-protected documents cannot be read without the password
+
+## Examples
+
+**Example 1: Basic reading**
+```bash
+User: "Can you read report.docx and summarize it?"
+pandoc report.docx -t markdown -o report.md
+cat report.md
+# Provide summary based on content
+```
+
+**Example 2: Extracting images**
+```bash
+User: "Extract all images from presentation.docx"
+python scripts/office/unpack.py presentation.docx unpacked/
+cp unpacked/word/media/* ./extracted_images/
+ls extracted_images/
+```
+
+**Example 3: Finding specific content**
+```bash
+User: "Find all mentions of 'budget' in the document"
+pandoc financial_report.docx -t plain -o temp.txt
+grep -n "budget" temp.txt
+```
+
+**Example 4: Reading document metadata**
+```bash
+User: "Who authored this document and when was it last modified?"
+python scripts/office/unpack.py document.docx unpacked/
+cat unpacked/docProps/core.xml | grep -E "(creator|modified)"
+```

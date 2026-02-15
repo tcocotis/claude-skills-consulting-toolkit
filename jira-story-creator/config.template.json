@@ -1,0 +1,9 @@
+{
+  "jira": {
+    "instanceUrl": "https://yourcompany.atlassian.net",
+    "email": "your.email@company.com",
+    "apiToken": "YOUR_JIRA_API_TOKEN_HERE",
+    "projectKey": "PROJ",
+    "storyTypeId": "10006"
+  }
+}

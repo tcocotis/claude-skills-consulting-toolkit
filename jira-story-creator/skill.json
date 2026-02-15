@@ -1,0 +1,18 @@
+{
+  "name": "jira-story-creator",
+  "version": "1.0.0",
+  "description": "Create detailed Jira Stories from implementation plans with user story format, acceptance criteria, implementation method, and testing method",
+  "author": "Tom Cocotis",
+  "created": "2026-02-14",
+  "category": "project-management",
+  "tags": ["jira", "stories", "agile", "user-stories", "tdd"],
+  "requirements": {
+    "python": "3.8+",
+    "packages": ["python-docx"]
+  },
+  "files": {
+    "main": "jira-story-creator.py",
+    "config": "config.template.json",
+    "readme": "README.md"
+  }
+}
