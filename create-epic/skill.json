@@ -1,11 +1,11 @@
 {
   "name": "create-epic",
-  "version": "1.0.0",
-  "description": "Draft a structured product Epic (User Story, Outcome, business-value Acceptance Criteria, References) as a Markdown file by default, or directly in Jira when a site is provided",
+  "version": "1.1.0",
+  "description": "Draft a structured product Epic (User Story, Outcome, business-value Acceptance Criteria, Testing Methodology, References) as a Markdown file by default, or directly in Jira when a site is provided",
   "author": "Tom Cocotis",
   "created": "2026-06-21",
   "category": "project-management",
-  "tags": ["epic", "jira", "agile", "user-stories", "acceptance-criteria", "markdown", "planning"],
+  "tags": ["epic", "jira", "agile", "user-stories", "acceptance-criteria", "testing", "markdown", "planning"],
   "requirements": {
     "mcp": ["atlassian (optional, for Jira output mode)"]
   },

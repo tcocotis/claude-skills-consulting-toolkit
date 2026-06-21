@@ -1,7 +1,8 @@
 # create-epic
 
 A Claude skill that drafts a well-structured product **Epic** from a consistent
-template — User Story, Outcome, business-value Acceptance Criteria, and References.
+template — User Story, Outcome, business-value Acceptance Criteria, Testing
+Methodology, and References.
 
 ## What it does
 
