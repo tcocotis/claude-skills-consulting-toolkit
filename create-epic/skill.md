@@ -1,8 +1,8 @@
 ---
 name: create-epic
-description: Draft a well-structured product Epic using a consistent template — User Story, Outcome, business-value Acceptance Criteria, and References. Writes the epic as a Markdown file by default, or files it directly in Jira when a Jira site is provided. Use when someone wants to draft or create a feature epic, write an epic in the standard format, or turn a feature idea into an epic doc or Jira issue. Triggers on "create an epic", "draft an epic", "new feature epic", "write an epic for <feature>".
-version: 1.0.0
-tags: [epic, jira, agile, user-stories, acceptance-criteria, markdown, planning]
+description: Draft a well-structured product Epic using a consistent template — User Story, Outcome, business-value Acceptance Criteria, Testing Methodology, and References. Writes the epic as a Markdown file by default, or files it directly in Jira when a Jira site is provided. Use when someone wants to draft or create a feature epic, write an epic in the standard format, or turn a feature idea into an epic doc or Jira issue. Triggers on "create an epic", "draft an epic", "new feature epic", "write an epic for <feature>".
+version: 1.1.0
+tags: [epic, jira, agile, user-stories, acceptance-criteria, testing, markdown, planning]
 ---
 
 # Create Epic
@@ -34,6 +34,7 @@ confirmation; do not invent facts to fill the template (see Guardrails).
 | Mechanism | How it works — only as deep as the feature warrants. |
 | Outcome | What's observably true when it's working. |
 | Acceptance criteria | Measurable, business-value framed. |
+| Testing methodology | How acceptance is verified — one row per test: purpose · evaluation method · expected result. |
 | References | Originating idea/ticket, design docs, downstream dependents. |
 | Feature ID | A short feature code. **Optional and usually omitted** — include only if the team uses one. |
 | Output location | Markdown file path (default), or Jira site + project key. |
@@ -126,6 +127,15 @@ Favor measurable outcomes (coverage, precision/recall, latency, cost envelope,
 enforced invariants, graceful degradation) over task checklists. If something can't
 be measured or verified, leave it out rather than invent a threshold.>
 
+## Testing Methodology
+
+<How the epic's acceptance is actually verified. Prefer a table with one row per
+test — **Test · Purpose · Evaluation method · Expected result** — grouped into tiers
+where it helps (e.g. local/unit on the logic, then live end-to-end on the real
+path). Each test should trace back to an Acceptance Criterion above. Favor concrete,
+runnable methods (fixtures, commands, recall/precision checks, simulated failures)
+and measurable expected results; don't invent thresholds the feature doesn't have.>
+
 ## Reference
 
 <Pointers that ground the epic: the originating idea/ticket it implements, design
@@ -145,7 +155,8 @@ team does use one, either append it to the title (see above) and/or add a short
 3. **Draft** the title and body using the template — depth driven by the feature,
    not by filling sections.
 4. **Confirm with the user** — show a compact preview (title + the section headers
-   + the acceptance criteria), roughly one screen, and the target path/destination.
+   + the acceptance criteria + the testing methodology), roughly one screen, and the
+   target path/destination.
    Wait for explicit go.
 5. **Write/create:**
    - *Markdown mode:* write the file to the agreed path using the filename
